@@ -1,5 +1,5 @@
-range = 1:34;
-dir = '/Users/janmachacek/Muvr/muvr-preclassification/training-data/jan-chest-12-06/';
+range = 1:38;
+dir = '/Users/janmachacek/Muvr/muvr-training-data/labelled/shoulders/jan-3/';
 
 for i = range
     % Prepare file names
