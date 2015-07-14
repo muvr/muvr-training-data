@@ -145,3 +145,6 @@ snapshots
 checkpoint
 
 *.*~
+
+
+*.pyc
