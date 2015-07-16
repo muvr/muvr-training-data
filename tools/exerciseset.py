@@ -1,10 +1,11 @@
 from __future__ import print_function
+import argparse
+import itertools
 import os
 import fnmatch
 import sys
-import random
 import numpy as np
-import pylab as pl
+import extrema
 
 musclegroups = {
     'aerobic': 1,
@@ -52,6 +53,9 @@ moves = {
     'twist': 34,
 }
 
+xyz_start_index = 2
+xyz_index = xrange(xyz_start_index, xyz_start_index + 3)
+
 max_mean = 1100
 min_mean = -1100
 max_std = 900
@@ -75,46 +79,72 @@ def data_from_csv(filename):
 def arr_to_csv(a):
     return ','.join([str(x) for x in a])
 
-def scale_array(a, low, high):
+def scale(a, low, high):
     return (a - low) / (high - low)
 
-def attributes_from_array(a):
+def label(a):
     # Assuming that the array contains only one kind of exercise move
     musclegroup = a[0][0]
     move = a[0][1]
+    return musclegroup * 100 + move
 
-    x_mean = scale_array(a[:,2].mean(), min_mean, max_mean)
-    y_mean = scale_array(a[:,3].mean(), min_mean, max_mean)
-    z_mean = scale_array(a[:,4].mean(), min_mean, max_mean)
-    x_std = scale_array(a[:,2].std(), min_std, max_std)
-    y_std = scale_array(a[:,3].std(), min_std, max_std)
-    z_std = scale_array(a[:,4].std(), min_std, max_std)
+def xyz_arrays(arr):
+    return [arr[:,i] for i in xyz_index]
 
-    return np.array(
-        (musclegroup * 100 + move,
-            x_mean, y_mean, z_mean,
-            x_std, y_std, z_std))
+def means(arr):
+    return (
+        scale(a.mean(), min_mean, max_mean)
+        for a in arr
+    )
 
-def attributes_from_csvfile(filename):
+def stds(arr):
+    return (
+        scale(a.std(), min_std, max_std)
+        for a in arr
+    )
+
+feature_map = {
+    'mean': means,
+    'std': stds,
+    'extrema': extrema.matching_extrema,
+}
+
+all_features = ('mean', 'std', 'extrema')
+
+def attributes_from_array(a, features=all_features):
+    l = (label(a),)
+    xyz = xyz_arrays(a)
+    fs = [feature_map[f](xyz) for f in features]
+    attrs = itertools.chain(l, *fs)
+    return np.array(list(attrs))
+
+def attributes_from_csvfile(filename, features=all_features):
     data = data_from_csv(filename)
     first = data[0]
 
     if 0 in first[0:2]:  # Is the muscle group and move known?
         return None
 
-    return attributes_from_array(data)
+    return attributes_from_array(data, features)
 
-def attributes_from_csvfiles(filenames):
-    arrays = (attributes_from_csvfile(csv) for csv in filenames)
+def attributes_from_csvfiles(filenames, features=all_features):
+    arrays = (attributes_from_csvfile(csv, features) for csv in filenames)
     arrays = [a for a in arrays if a is not None]  # Filter empty values out
     return np.array(arrays)
 
+def create_arg_parser(description='Parse exercise set'):
+    p = argparse.ArgumentParser(description=description)
+    p.add_argument('directory', metavar='DIR', type=str, help='Directory to scan CSV from')
+    p.add_argument('--features', nargs='+', choices=all_features, type=str,
+            default=all_features, help='Features to include in the result')
+    return p
+
 if __name__ == '__main__':
-    csvpath = sys.argv[1]
-    csvpaths = find_csv_files(csvpath)
+    opts = create_arg_parser().parse_args()
+    csvpaths = find_csv_files(opts.directory)
 
     for csvfile in csvpaths:
-        attrs = attributes_from_csvfile(csvfile)
+        attrs = attributes_from_csvfile(csvfile, opts.features)
         if attrs is not None:
             print(arr_to_csv(attrs))
 
