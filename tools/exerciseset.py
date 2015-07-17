@@ -106,7 +106,7 @@ def stds(arr):
 feature_map = {
     'mean': means,
     'std': stds,
-    'extrema': extrema.matching_extrema,
+    'extrema': extrema.matching_extrema_flat,
 }
 
 all_features = ('mean', 'std', 'extrema')
