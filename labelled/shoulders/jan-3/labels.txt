@@ -7,7 +7,7 @@ shoulders,dumbbell-press,,35,5
 shoulders,barbell-pullup,,20,10
 shoulders,barbell-pullup,,30,10
 shoulders,barbell-pullup,,35,9
-shoulders,dumbbell-front-raise,,20,10
+shoulders,dumbbell-front-rise,,20,10
 shoulders,lateral-raise,,35,15
 shoulders,lateral-raise,,40,10
 shoulders,lateral-raise,,45,10

@@ -34,7 +34,7 @@
 34=arms,straight-bar-triceps-extension,,60,13
 35=arms,rope-biceps-curl,,65,7
 36=arms,straight-bar-triceps-extension,,65,10
-37=arms,tricep-dips,,-1,20
+37=arms,triceps-dips,,-1,20
 38=arms,barbell-biceps-curl,,20,15
 39=arms,triceps-dips,,-1,20
 40=arms,alt-dumbbell-biceps-curl,,15,20
@@ -47,7 +47,7 @@
 47=arms,triceps-dips,,-1,15
 48=arms,alt-dumbbell-biceps-curl,,20,15
 49=arms,triceps-dips,,-1,15
-50=arms,barbel-biceps-curl,,30,6
+50=arms,barbell-biceps-curl,,30,6
 51=arms,triceps-dips,,-1,14
 52=arms,alt-dumbbell-biceps-curl,,22.5,10
 53=arms,triceps-dips,,-1,15

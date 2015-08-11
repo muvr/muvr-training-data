@@ -19,7 +19,6 @@ musclegroups = {
 moves = {
     'alt-dumbbell-biceps-curl': 1,
     'angle-chest-press': 2,
-    'barbel-biceps-curl': 3,
     'barbell-biceps-curl': 3,
     'barbell-press': 5,
     'biceps-curl': 6,
@@ -48,7 +47,6 @@ moves = {
     'squat': 29,
     'straight-bar-biceps-curl': 30,
     'straight-bar-triceps-extension': 31,
-    'tricep-dips': 32,
     'triceps-dips': 32,
     'twist': 34,
 }
