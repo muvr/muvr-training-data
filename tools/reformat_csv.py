@@ -76,7 +76,7 @@ def reformat_csv_data(data):
     return new_data
 
 
-def main(input_directory, output_directory):
+def main(input_directory, output_directory, folder_csv):
     """Main entry point."""
 
     is_dir = lambda dir: os.path.isdir(dir)
@@ -84,29 +84,41 @@ def main(input_directory, output_directory):
 
     count = 0
 
-    all_model_dir = list_filter_dirs(input_directory, is_dir)
-    for model_dir in all_model_dir:
-        all_sub_dir = list_filter_dirs(model_dir, is_dir)
-        for sub_dir in all_sub_dir:
-            all_csv = list_filter_dirs(sub_dir, is_csv_file)
-            for csv_file in all_csv:
-                data = load_csv(csv_file)
-                new_data = reformat_csv_data(data)
-                new_name = csv_file.replace("/", "_").replace("\\", "_")
-                if output_directory == '':
-                    final_output = os.path.join(model_dir, new_name)
-                else:
-                    final_output = os.path.join(output_directory, new_name)
-                write_to_csv(final_output, new_data)
-                count += 1
+    if folder_csv is None:
+        all_model_dir = list_filter_dirs(input_directory, is_dir)
+        for model_dir in all_model_dir:
+            all_sub_dir = list_filter_dirs(model_dir, is_dir)
+            for sub_dir in all_sub_dir:
+                all_csv = list_filter_dirs(sub_dir, is_csv_file)
+                for csv_file in all_csv:
+                    data = load_csv(csv_file)
+                    new_data = reformat_csv_data(data)
+                    new_name = csv_file.replace("/", "_").replace("\\", "_")
+                    if output_directory == '':
+                        final_output = os.path.join(model_dir, new_name)
+                    else:
+                        final_output = os.path.join(output_directory, new_name)
+                    write_to_csv(final_output, new_data)
+                    count += 1
+    else:
+        all_csv = list_filter_dirs(folder_csv, is_csv_file)
+        for csv_file in all_csv:
+            data = load_csv(csv_file)
+            new_data = reformat_csv_data(data)
+            new_name = os.path.basename(csv_file)
+            # print os.path.join(output_directory, new_name)
+            write_to_csv(os.path.join(output_directory, new_name), new_data)
+            count += 1
     print "Finish converting %d csv files" % count
 
 
 if __name__ == '__main__':
     """List arguments for this program"""
     parser = argparse.ArgumentParser(description='Convert old format csv to the new one.')
-    parser.add_argument('-i', metavar='input', default='labelled', type=str, help="folder containing old format csv")
+    # Convert all csv at this path: labelled/model*/user*/*.csv ==> labelled/model*/*.csv
+    parser.add_argument('-l', metavar='input', default='labelled', type=str, help="labelled folder containing old format csv")
+    parser.add_argument('-f', metavar='folder', type=str, help="folder contain csv")
     parser.add_argument('-o', metavar='output', default='', type=str, help="output folder")
     args = parser.parse_args()
 
-    sys.exit(main(args.i, args.o))
+    sys.exit(main(args.l, args.o, args.f))
