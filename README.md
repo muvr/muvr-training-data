@@ -7,38 +7,33 @@ Some of the datasets might be zipped since they would be to big otherwise.
 
 ## (partial) List of available datasets
 
+The default format is **single-exercise-extended**. 
+
 #### combined
 
 | name                                         	| format                 	| zipped 	| split    	| comment                                                                	|
 |----------------------------------------------	|------------------------	|:------:	|----------	|------------------------------------------------------------------------	|
-| 09-09-15-activity-slacking.zip      	| combined-1200          	|    x   	| presplit 	| Collection of movement data (walking, still, other) vs. exercise data. 	|
-| 18-09-15-triceps-biceps-lateral.zip 	| single-exercise-simple 	|    x   	|          	| Collection of three exercises.                                         	|
-| combined-tbl-activity-slacking.zip  	| single-exercise-simple 	|    x   	| presplit 	| Combination of 09-09-15-activity-slacking.zip and                      	|
+| 18-09-15-triceps-biceps-lateral.zip 	| single-exercise-extended 	|    x   	|          	| Collection of three exercises.                                         	|
+| combined-tbl-activity-slacking-(test|train).zip  	| single-exercise-extended 	|    x   	| presplit 	| Combination of activity data and triceps-biceps-lateral |
 
 #### labelled
-Jan's collected exercises. Contains `raw-acceleration` and `single-exercise-extended` data files. Not all `raw` files have been converted.
-
-#### raw
-Unlabeled data in `raw-acceleration` format.
+Jan's collected exercises. Contains `single-exercise-extended` data files.
 
 ## Format descriptions
 
-#### raw-acceleration
-The dataset is a collection of **unlabeled** acceleration data, one file per exercise. A file for an exercise contains dumped sensor data in an array like format
+#### single-exercise-extended
+The dataset is a collection of **labeled** data, one file per exercise. A file for an exercise is in CSV format and there is one row per measurement:
+```
+x | y | z | exercise name | intensity | weight | repetitions |
+```
 
-#### single-exercise-simple
+#### single-exercise-simple (deprecated)
 The dataset is a collection of **labeled** data, one file per exercise. A file for an exercise is in CSV format and there is one row per measurement:
 ```
 exercise group | exercise name | x | y | z |
 ```
 
-#### single-exercise-extended
-The dataset is a collection of **labeled** data, one file per exercise. A file for an exercise is in CSV format and there is one row per measurement:
-```
-exercise group | exercise name | <unknown> | intensity? | weight | x | y | z |
-```
-
-#### combined-1200
+#### combined-1200 (deprecated)
 The dataset is a collection of **labeled** data in a single file. The file is in CSV and there is one row per example:
 ```
 label | X1 | X2 | ... | X400  | Y1 | Y2 | ... | Y400   | Z1 | Z2 | ... | Z400 
