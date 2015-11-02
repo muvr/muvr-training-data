@@ -14,7 +14,7 @@ The default format is **single-exercise-extended**.
 | name                                         	| format                 	| zipped 	| split    	| comment                                                                	|
 |----------------------------------------------	|------------------------	|:------:	|----------	|------------------------------------------------------------------------	|
 | 18-09-15-triceps-biceps-lateral.zip 	| single-exercise-extended 	|    x   	|          	| Collection of three exercises.                                         	|
-| combined-tbl-activity-slacking-(test|train).zip  	| single-exercise-extended 	|    x   	| presplit 	| Combination of activity data and triceps-biceps-lateral |
+| combined-tbl-activity-slacking-(test/train).zip  	| single-exercise-extended 	|    x   	| presplit 	| Combination of activity data and triceps-biceps-lateral |
 
 #### labelled
 Jan's collected exercises. Contains `single-exercise-extended` data files.
