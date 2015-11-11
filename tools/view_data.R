@@ -12,14 +12,16 @@ for (i in 1:length(list_file))
 {
     csv_name <- list_file[i]
     full_path <- file.path(folder, csv_name)
-    print(paste("analysing this csv:", full_path))
-    data <- read.csv(full_path, header=FALSE)
-    # set column names
-    names(data) <- c("x", "y", "z", "ex", "int", "kg", "rep")
+    output_pdf <- paste(full_path, ".pdf", sep = "")
+    if (!file.exists(output_pdf)) {
+        print(paste("analysing this csv:", full_path))
+        data <- read.csv(full_path, header=FALSE)
+        # set column names
+        names(data) <- c("x", "y", "z", "ex", "int", "kg", "rep")
 
-    pdf(paste(full_path, ".pdf", sep = ""))
+        pdf(output_pdf)
 
-    # plot x,y,z and ex
-    plot.ts(data[c("x", "y", "z", "ex")], main="Sensors data")
-
+        # plot x,y,z and ex
+        plot.ts(data[c("x", "y", "z", "ex")], main="Sensors data")
+    }
 }
