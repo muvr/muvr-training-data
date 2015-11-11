@@ -21,6 +21,8 @@ FNR==1 {
   else DIR=TRAIN_DIR
   o=DIR "/" FILE
   print FILE " -> " DIR
+  INC=0
+  LABEL=""
 }
 BEGIN { FS=","; OFS="," }
 mode=="slacking"{
@@ -30,7 +32,7 @@ mode=="slacking"{
 }
 mode!="slacking"{
   if ( $4 != "" ) {
-    gsub(/ /, "", $4)
+    sub(/ /, "", $4)
     $4 = tolower($4)
     if ($4 == "bc") { $4 = "arms/bicep-curl" }
     else if ($4 == "te") { $4 = "arms/tricep-extension" }
@@ -39,6 +41,18 @@ mode!="slacking"{
     else if ($4 == "bicep") { $4 = "arms/bicep-curl" }
     else if ($4 == "tricep") { $4 = "arms/tricep-extension" }
     else if ($4 == "lateral") { $4 = "arms/lateral-raise" }
+
+    if ($4 != LABEL) {
+      # New label: create a new file containing only this label
+      LABEL=$4
+      INC=INC+1
+      F = FILE
+      sub(/\.[^\.]*$/, "-" INC "&", F)
+      close(o)
+      o=DIR "/" F
+    }
     print > o
+  } else {
+    LABEL=""
   }
 }
